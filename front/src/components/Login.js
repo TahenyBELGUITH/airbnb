@@ -1,30 +1,35 @@
 import React, { useContext, useState } from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "./UserContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [redirect, setRedirect] = useState(false);
-
   const { setUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleLoginSubmit = async (ev) => {
     ev.preventDefault();
     try {
-      const { data } = await axios.post("/login", { email, password });
-      alert("login successful!!");
-      setUser(data);
-      setRedirect(true);
+      // console.log(email, password);
+      if (email.length && password.length) {
+        const res = await axios.post("http://localhost:4000/login", {
+          email,
+          password,
+        });
+        if (res.status === 200 && res.data.loggedUser) {
+          console.log(res.data);
+          navigate("/account");
+        }
+      } else {
+        alert("remplir champs...");
+      }
     } catch (e) {
-      alert("login failed!");
+      console.log(e);
     }
   };
 
-  if (redirect) {
-    return <Navigate to={"/"} />;
-  }
   return (
     <div className="mt-4 grow flex items-center justify-around">
       <div className="mb-32">
@@ -42,11 +47,12 @@ const Login = () => {
             value={password}
             onChange={(ev) => setPassword(ev.target.value)}
           />
-          <button className="primary">Login</button>
+          <button type="submit" className="primary">
+            Login
+          </button>
           <div className="text-center py-2 text-gray-500">
             don't have an account yet?{" "}
             <Link to={"/register"} className="text-black underline">
-              {" "}
               Register now
             </Link>
           </div>

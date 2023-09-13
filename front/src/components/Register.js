@@ -7,17 +7,17 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const registerUser = (ev) => {
+  const registerUser = async (ev) => {
     ev.preventDefault();
     try {
-      axios.post("/register", {
+      const res = await axios.post("http://localhost:4000/register", {
         name,
         email,
         password,
       });
-      alert("Registration successful, Now you can log in");
+      console.log(res);
     } catch (e) {
-      alert("Registration failed! Please try later");
+      console.log(e);
     }
   };
   return (
