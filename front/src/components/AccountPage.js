@@ -4,14 +4,12 @@ import { Navigate } from "react-router-dom";
 
 const AccountPage = () => {
   const { user, ready } = useContext(UserContext);
-
-  if (!ready) return "Loading...";
-
   if (ready && !user) return <Navigate to={"/login"} />;
-
-  return (
+  return ready ? (
+    <div>Loading ... </div>
+  ) : (
     <div>
-      <nav></nav>
+      <h1>Hello {user?.name}</h1>
     </div>
   );
 };

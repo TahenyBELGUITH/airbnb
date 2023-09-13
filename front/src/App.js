@@ -4,12 +4,8 @@ import Register from "./components/Register";
 import { BrowserRouter } from "react-router-dom";
 
 import Layout from "./layout";
-import axios from "axios";
 import { UserContextProvider } from "./components/UserContext";
 import AccountPage from "./components/AccountPage";
-
-axios.defaults.baseURL = "http://localhost:4000";
-axios.defaults.withCredentials = true;
 
 function App() {
   return (
